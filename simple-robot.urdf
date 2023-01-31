@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+   2 <robot name="myfirst">
+   3   <link name="base_link">
+            4     <visual>
+            5        <geometry>
+            6                <cylinder length="0.4" radius="0.6"/>
+            7        </geometry>
+                        <material name="blue">
+                                <color rgba="0 0 .8 1"/>
+                        </material>
+            8     </visual>
+                    <collision>
+                        <geometry>
+                            <cylinder length="0.4" radius="0.6"/>
+                        </geometry>
+                    </collision>
+                    <inertial>
+                        <mass value="100"/>
+                        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+                    </inertial>
+   9   </link>
+
+        <link name="right_forearm">
+        4     <visual>
+        5        <geometry>
+        6                <box size="0.8 0.05 0.05"/>
+        7        </geometry>
+                    <origin xyz="0.4 0 0.0" rpy="0 0 0.0"/>
+                    <material name="red">
+                            <color rgba="0.8 0 0 1"/>
+                    </material>
+        8     </visual>
+                <collision>
+                    <geometry>
+                        <box size="0.8 0.05 0.05"/>
+                    </geometry>
+                    <origin xyz="0.4 0 0.0" rpy="0 0 0.0"/>
+                </collision>
+                <inertial>
+                    <mass value="0.8"/>
+                    <origin xyz="0.4 0 0.0" rpy="0 0 0.0"/>
+                    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+                </inertial>
+   9   </link>
+
+        <joint name="base_to_right_forearm" type="revolute">
+  21        <parent link="base_link"/>
+  22        <child link="right_forearm"/>
+            <axis xyz="0 1 0"/>
+            <limit effort="1000.0" lower="-1.5" upper="1.5" velocity="1.5"/>
+  23        <origin xyz="0 -0.64 0.0"/>
+  24    </joint>
+
+        <link name="right_lowerarm">
+            4     <visual>
+            5        <geometry>
+            6                <box size="0.4 0.05 0.05"/>
+            7        </geometry>
+                        <origin xyz="0.2 0 0.0" rpy="0 0 0.0"/>
+                        <material name="green">
+                                <color rgba="0.0 0.8 0 1"/>
+                        </material>
+            8     </visual>
+                    <collision>
+                        <geometry>
+                            <box size="0.4 0.05 0.05"/>
+                        </geometry>
+                        <origin xyz="0.2 0 0.0" rpy="0 0 0.0"/>
+                    </collision>
+                    <inertial>
+                        <mass value="0.4"/>
+                        <origin xyz="0.2 0 0.0" rpy="0 0 0.0"/>
+                        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+                    </inertial>
+   9   </link>
+
+        <joint name="right_forearm_to_right_lowerarm" type="revolute">
+  21        <parent link="right_forearm"/>
+  22        <child link="right_lowerarm"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="1000.0" lower="0" upper="1.8" velocity="1.5"/>
+  23        <origin xyz="0.83 0 0.0"/>
+  24    </joint>
+
+        <link name="right_hand">
+                    4     <visual>
+                    5        <geometry>
+                    6                <box size="0.2 0.05 0.05"/>
+                    7        </geometry>
+                                <origin xyz="0.1 0 0.0" rpy="0 0 0.0"/>
+                                <material name="red">
+                                        <color rgba="0.8 0 0 1"/>
+                                </material>
+                    8     </visual>
+                            <collision>
+                                <geometry>
+                                    <box size="0.2 0.05 0.05"/>
+                                </geometry>
+                                <origin xyz="0.1 0 0.0" rpy="0 0 0.0"/>
+                            </collision>
+                            <inertial>
+                                <mass value="0.2"/>
+                                <origin xyz="0.1 0 0.0" rpy="0 0 0.0"/>
+                                <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+                            </inertial>
+        9   </link>
+
+                <joint name="right_lowerarm_to_right_hand" type="revolute">
+        21        <parent link="right_lowerarm"/>
+        22        <child link="right_hand"/>
+        23        <origin xyz="0.43 0 0.0"/>
+                  <axis xyz="0 0 1"/>
+                  <limit effort="1000.0" lower="0" upper="1.6" velocity="1.5"/>
+        24    </joint>
+
+
+
+
+
+
+
+
+        <link name="left_forearm">
+        4     <visual>
+        5        <geometry>
+        6                <box size="0.8 0.05 0.05"/>
+        7        </geometry>
+                    <origin xyz="0.4 0 0.0" rpy="0 0 0.0"/>
+                    <material name="red">
+                            <color rgba="0.8 0 0 1"/>
+                    </material>
+        8     </visual>
+                <collision>
+                    <geometry>
+                        <box size="0.8 0.05 0.05"/>
+                    </geometry>
+                    <origin xyz="0.4 0 0.0" rpy="0 0 0.0"/>
+                </collision>
+                <inertial>
+                    <mass value="0.8"/>
+                    <origin xyz="0.4 0 0.0" rpy="0 0 0.0"/>
+                    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+                </inertial>
+   9   </link>
+
+        <joint name="base_to_left_forearm" type="revolute">
+  21        <parent link="base_link"/>
+  22        <child link="left_forearm"/>
+            <axis xyz="0 1 0"/>
+            <limit effort="1000.0" lower="-1.5" upper="1.5" velocity="1.5"/>            
+  23        <origin xyz="0 0.64 0.0"/>
+  24    </joint>
+
+        <link name="left_lowerarm">
+            4     <visual>
+            5        <geometry>
+            6                <box size="0.4 0.05 0.05"/>
+            7        </geometry>
+                        <origin xyz="0.2 0 0.0" rpy="0 0 0.0"/>
+                        <material name="green">
+                                <color rgba="0.0 0.8 0 1"/>
+                        </material>
+            8     </visual>
+                    <collision>
+                        <geometry>
+                            <box size="0.4 0.05 0.05"/>
+                        </geometry>
+                        <origin xyz="0.2 0 0.0" rpy="0 0 0.0"/>
+                    </collision>
+                    <inertial>
+                        <mass value="0.4"/>
+                        <origin xyz="0.2 0 0.0" rpy="0 0 0.0"/>
+                        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+                    </inertial>
+   9   </link>
+
+        <joint name="left_forearm_to_left_lowerarm" type="revolute">
+  21        <parent link="left_forearm"/>
+  22        <child link="left_lowerarm"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="1000.0" lower="-1.8" upper="0" velocity="1.5"/>
+  23        <origin xyz="0.83 0 0.0"/>
+  24    </joint>
+
+        <link name="left_hand">
+                    4     <visual>
+                    5        <geometry>
+                    6                <box size="0.2 0.05 0.05"/>
+                    7        </geometry>
+                                <origin xyz="0.1 0 0.0" rpy="0 0 0.0"/>
+                                <material name="red">
+                                        <color rgba="0.8 0 0 1"/>
+                                </material>
+                    8     </visual>
+                            <collision>
+                                <geometry>
+                                    <box size="0.2 0.05 0.05"/>
+                                </geometry>
+                                <origin xyz="0.1 0 0.0" rpy="0 0 0.0"/>
+                            </collision>
+                            <inertial>
+                                <mass value="0.2"/>
+                                <origin xyz="0.1 0 0.0" rpy="0 0 0.0"/>
+                                <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+                            </inertial>
+        9   </link>
+
+                <joint name="left_lowerarm_to_left_hand" type="revolute">
+        21        <parent link="left_lowerarm"/>
+        22        <child link="left_hand"/>
+        23        <origin xyz="0.43 0 0.0"/>
+                  <axis xyz="0 0 1"/>
+                  <limit effort="1000.0" lower="-1.6" upper="0" velocity="1.5"/>
+        24    </joint>
+
+
+
+  10 </robot>
