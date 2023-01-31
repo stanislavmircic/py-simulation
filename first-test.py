@@ -48,7 +48,7 @@ pitch = -10.0
 roll = 0
 upAxisIndex = 2
 headUpDown = 1.2
-
+headLeftRight = 0
 cameraProjectionMatrix = [
     1.0825318098068237, 0.0, 0.0, 0.0, 0.0, 1.732050895690918, 0.0, 0.0, 0.0, 0.0,
     -1.0002000331878662, -1.0, 0.0, 0.0, -0.020002000033855438, 0.0
@@ -89,7 +89,7 @@ for i in range (1000000):
             udsteering = 100.2
         if (k == p.B3G_DOWN_ARROW and (v & p.KEY_IS_DOWN)):
             udsteering = -100.2
-    c = 10
+    c = 100
     p.applyExternalForce(robotID,-1,[c*udsteering, c*-lrsteering,0],[0,0,0], p.LINK_FRAME)
     #p.applyExternalTorque(robotID,right_forearm_ID,[0,-udsteering,0],p.LINK_FRAME)
     #print(udsteering)
@@ -134,11 +134,6 @@ for i in range (1000000):
     # np.array(absolute_angular_velocity) )
     
     robotPos, robotOrn = p.getBasePositionAndOrientation(robotID)
-
-   
-
-    # viewMatrix = p.computeViewMatrixFromYawPitchRoll(camTargetPos, camDistance, 90, pitch, roll,
-    #                                                  upAxisIndex)
    
     #defines where camera looks horizont or down
     headUpDown = headUpDown+0.001*udsteering
@@ -146,22 +141,24 @@ for i in range (1000000):
         headUpDown = 5
     if(headUpDown<0):
         headUpDown = 0
+    headLeftRight = headLeftRight + 0.001*lrsteering
 
     #get transformation matrix from quaternion of robot base rotation 
     rot_mat = p.getMatrixFromQuaternion(orientation_absolute)
-    #extract just vector that points up in local robot base frame of ref
+
+    #calculate position of camera and point of view based on rotation of base
     array_of_el = np.array(rot_mat)
     matrix = array_of_el.reshape((3, 3))
-    camera_view_vector  = np.array([headUpDown, 0, 0])
+    camera_view_vector  = np.array([headUpDown, headLeftRight, 0])
     transf_view = matrix.dot(camera_view_vector)
     camera_origin_vector  = np.array([0.3, 0, 0.8])
     transf_origin= matrix.dot(camera_origin_vector)
     camera_up_vector  = np.array([0, 0, 1.0])
     transf_up= matrix.dot(camera_up_vector)
-    print(transf_origin, transf_view)
-    #local_up_vec = rot_mat[6:]
+    #print(transf_origin, transf_view)
+
     viewMatrix = p.computeViewMatrix((robotPos[0]+transf_origin[0],robotPos[1]+transf_origin[1],robotPos[2]+transf_origin[2]), (robotPos[0]+transf_view[0],robotPos[1]+transf_view[1],robotPos[2]+transf_view[2]),transf_up)
-    #print(type(robotPos), robotPos)
+
 
     img_arr = p.getCameraImage(pixelWidth,
                                pixelHeight,
@@ -175,5 +172,5 @@ for i in range (1000000):
     #startTime = datetime.now()
     p.stepSimulation()
     #time.sleep(1./240.)
-    #print(datetime.now() - startTime)
+    print(datetime.now() - startTime)
 p.disconnect()
