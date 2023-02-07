@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import cv2 as cv
-import math
 
 pixelWidth = 128
 pixelHeight = 128
@@ -12,11 +11,6 @@ print(names_df)
 #get time axis
 first_name = names_df['names'].iloc[0]
 date_df = pd.read_hdf('history.h5', key=first_name)
-temp_column = date_df.to_numpy()
-new_np_arr = []
-[new_np_arr.append(np.array(row)) for row in temp_column]
-date_np = np.array(new_np_arr)
-print(date_np)
 
 #print all links and joints
 for name_index, name in enumerate(names_df['names']):
@@ -24,7 +18,7 @@ for name_index, name in enumerate(names_df['names']):
         continue
     data_name = names_df['names'].iloc[name_index]
     history_df = pd.read_hdf('history.h5', key=data_name)
-    number_of_graph_rows = math.ceil(len(history_df.columns)/2)
+    number_of_graph_rows = int(len(history_df.columns)/2)
     if(number_of_graph_rows<1):
         number_of_graph_rows = 1
     fig, axs = plt.subplots(number_of_graph_rows,2)
@@ -39,12 +33,25 @@ for name_index, name in enumerate(names_df['names']):
         [new_np_arr.append(np.array(row)) for row in temp_column]
         array_np = np.array(new_np_arr)
         if(len(axs.shape)==1):
-            axs[index].plot(date_np, array_np)
-            axs[index].set_title(col)
+            axs[index].plot(array_np)
+            axs[index].set_title(data_name + ' - '+ col)
         else:
-            axs[int(index/2), index%2].plot(date_np, array_np)
-            axs[int(index/2), index%2].set_title(col)
+            axs[int(index/2), index%2].plot(array_np)
+            axs[int(index/2), index%2].set_title(data_name + ' - '+ col)
     fig.show()
 
 
 data_name = names_df['names'].iloc[1]
+
+
+# history_df = pd.read_hdf('history.h5', key='image')
+# print(history_df)
+# out = cv.VideoWriter('output.avi', cv.VideoWriter_fourcc(*'DIVX'), 240, (pixelWidth, pixelHeight))
+# for index, row in history_df.iterrows():
+#     one_frame = row['image']
+#     one_frame = one_frame.reshape(pixelWidth,pixelWidth,3)
+#     out.write(np.uint8(one_frame))
+#     #cv.imshow('Frame', one_frame)
+# #[out.write(f) for _,row in history_df]
+# out.release()
+# print('Video created')
