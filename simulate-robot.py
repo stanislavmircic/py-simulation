@@ -110,6 +110,9 @@ for temp_joint in range(p.getNumJoints(robotID)):
     if(nameOfLink.decode()=='base_link'):
         base_ID = temp_joint
 
+data_column_names.append('camera')
+column_names.append(['focus_position_relative'])
+
 data_column_names.append('image')
 column_names.append(['image'])
 rgba=[]
@@ -157,10 +160,10 @@ for step in range (10000):
     if(step%4 ==0):
         current_state = [(time.time())-before]
         base_pos_orientation = p.getBasePositionAndOrientation(robotID)
-        current_state.append(base_pos_orientation)
         robotPos = base_pos_orientation[0] 
         robotOrn = base_pos_orientation[1]
-
+        orientation_euler = p.getEulerFromQuaternion(robotOrn)
+        current_state.append([robotPos,orientation_euler])
         #------------------------ get states of all links and joints ---------------------------
         for temp_joint in range(p.getNumJoints(robotID)):
 
@@ -173,7 +176,8 @@ for step in range (10000):
             absolute_linear_velocity,\
             absolute_angular_velocity = p.getLinkState(robotID, temp_joint,1,1)
             position_relative = tuple(np.subtract(position_absolute, robotPos))
-            
+            orientation_absolute = p.getEulerFromQuaternion(orientation_absolute)
+
             joint_position, \
             joint_velocity, \
             joint_reaction_forces, \
@@ -206,6 +210,8 @@ for step in range (10000):
         transf_up= matrix.dot(camera_up_vector)
         #print(transf_origin, transf_view)
         viewMatrix = p.computeViewMatrix((robotPos[0]+transf_origin[0],robotPos[1]+transf_origin[1],robotPos[2]+transf_origin[2]), (robotPos[0]+transf_view[0],robotPos[1]+transf_view[1],robotPos[2]+transf_view[2]),transf_up)
+
+        current_state.append([camera_view_vector])
 
         #--------------------------- get camera image ---------------------------------------------
         w, h, rgba, depth, mask = p.getCameraImage(pixelWidth,
