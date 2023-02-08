@@ -120,6 +120,7 @@ rgba=[]
 
 #------------------------- Start simulation -------------------------------------
 before = time.time()
+last_time = before
 for step in range (10000):
 
     
@@ -236,7 +237,9 @@ for step in range (10000):
     p.stepSimulation()
     #time.sleep(1./240.)
     #print(datetime.now() - startTime)
-    print((time.time())-before)
+    now = time.time()
+    print(now-last_time)
+    last_time = now
 p.disconnect()
 
 
